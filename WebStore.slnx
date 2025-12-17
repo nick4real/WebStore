@@ -1,1 +1,43 @@
-<Solution />
+<Solution>
+  <Folder Name="/Aspire/">
+    <Project Path="Aspire/AspireApp.AppHost/AspireApp.AppHost.csproj" Id="a3043152-1b5f-41a1-b82f-e9e8e6fad094" />
+    <Project Path="Aspire/AspireApp.ServiceDefaults/AspireApp.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/Clients/">
+    <Project Path="Clients/BlazorApp/BlazorApp.csproj" />
+  </Folder>
+  <Folder Name="/Gateway/">
+    <Project Path="Gateway/ApiGateway/ApiGateway.csproj" />
+  </Folder>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Feedback/">
+    <Project Path="Services/Feedback/Feedback.Api/Feedback.Api.csproj" />
+    <Project Path="Services/Feedback/Feedback.Application/Feedback.Application.csproj" Id="d6a71190-dd68-4ccb-8a4f-c989a6c83c78" />
+    <Project Path="Services/Feedback/Feedback.Domain/Feedback.Domain.csproj" Id="1bd61ba6-33f5-48e0-b268-756e31db38e8" />
+    <Project Path="Services/Feedback/Feedback.Infrastructure/Feedback.Infrastructure.csproj" Id="60af4a1f-bfff-4be4-8546-3ad9fc774f50" />
+  </Folder>
+  <Folder Name="/Services/Notification/">
+    <Project Path="Services/Notification/Notification.Api/Notification.Api.csproj" />
+    <Project Path="Services/Notification/Notification.Application/Notification.Application.csproj" Id="e2840a51-ac01-43cd-a82c-372750840db9" />
+    <Project Path="Services/Notification/Notification.Domain/Notification.Domain.csproj" Id="b850f468-e99c-4f23-ad50-9a601c8433be" />
+    <Project Path="Services/Notification/Notification.Infrastructure/Notification.Infrastructure.csproj" Id="84711aaa-3852-4f37-b5a7-e560d2a80481" />
+  </Folder>
+  <Folder Name="/Services/Order/">
+    <Project Path="Services/Order/Order.Api/Order.Api.csproj" />
+    <Project Path="Services/Order/Order.Application/Order.Application.csproj" Id="ccc76b86-04e1-4d2e-b122-7f6954db4cee" />
+    <Project Path="Services/Order/Order.Domain/Order.Domain.csproj" Id="715fe061-c4be-41a0-82b9-e4ee176d73b9" />
+    <Project Path="Services/Order/Order.Infrastructure/Order.Infrastructure.csproj" Id="338b7757-a2ac-4ee4-bde1-4016cabc45d8" />
+  </Folder>
+  <Folder Name="/Services/Product/">
+    <Project Path="Services/Product/Product.Api/Product.Api.csproj" />
+    <Project Path="Services/Product/Product.Application/Product.Application.csproj" Id="23243c0d-1456-4364-ab5d-d5cf179a8e68" />
+    <Project Path="Services/Product/Product.Domain/Product.Domain.csproj" Id="d21c91de-dc4f-49c4-8dae-bcf4c32ce68c" />
+    <Project Path="Services/Product/Product.Infrastructure/Product.Infrastructure.csproj" Id="08ec2275-198d-4c44-a335-e55f9df503f7" />
+  </Folder>
+  <Folder Name="/Services/User/">
+    <Project Path="Services/User/User.Api/User.Api.csproj" />
+    <Project Path="Services/User/User.Application/User.Application.csproj" Id="69df3624-a703-4202-b44a-8c9a4591c334" />
+    <Project Path="Services/User/User.Domain/User.Domain.csproj" Id="f5bd6425-981a-4c87-bb6d-62cf92533023" />
+    <Project Path="Services/User/User.Infrastructure/User.Infrastructure.csproj" Id="4c8efa31-05e5-4e88-8cc0-ac3965fffeda" />
+  </Folder>
+</Solution>
