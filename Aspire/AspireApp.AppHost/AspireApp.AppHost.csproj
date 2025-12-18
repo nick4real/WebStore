@@ -16,12 +16,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Clients\BlazorApp\BlazorApp.csproj" />
-    <ProjectReference Include="..\..\Gateway\ApiGateway\ApiGateway.csproj" />
-    <ProjectReference Include="..\..\Services\Feedback\Feedback.Api\Feedback.Api.csproj" />
-    <ProjectReference Include="..\..\Services\Notification\Notification.Api\Notification.Api.csproj" />
-    <ProjectReference Include="..\..\Services\Order\Order.Api\Order.Api.csproj" />
-    <ProjectReference Include="..\..\Services\Product\Product.Api\Product.Api.csproj" />
-    <ProjectReference Include="..\..\Services\User\User.Api\User.Api.csproj" />
+    <ProjectReference Include="..\..\Gateway\WebStoreGateway\WebStoreGateway.csproj" />
+    <ProjectReference Include="..\..\Services\Feedback\WebStoreFeedback.API\WebStoreFeedback.API.csproj" />
+    <ProjectReference Include="..\..\Services\Notification\WebStoreNotification.API\WebStoreNotification.API.csproj" />
+    <ProjectReference Include="..\..\Services\Order\WebStoreOrder.API\WebStoreOrder.API.csproj" />
+    <ProjectReference Include="..\..\Services\Product\WebStoreProduct.API\WebStoreProduct.API.csproj" />
+    <ProjectReference Include="..\..\Services\User\WebStoreUser.API\WebStoreUser.API.csproj" />
   </ItemGroup>
 
 </Project>
