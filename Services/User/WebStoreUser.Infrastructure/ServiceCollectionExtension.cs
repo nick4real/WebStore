@@ -30,7 +30,6 @@ public static class ServiceCollectionExtension
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IUserService, UserService>();
 
             return services;
         }
