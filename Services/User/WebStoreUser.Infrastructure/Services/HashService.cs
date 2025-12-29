@@ -2,7 +2,7 @@
 using System.Text;
 using WebStoreUser.Application.Interfaces.Services;
 
-namespace WebStoreUser.Application.Services;
+namespace WebStoreUser.Infrastructure.Services;
 
 public class HashService : IHashService
 {

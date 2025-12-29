@@ -8,7 +8,7 @@ using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Services;
 using WebStoreUser.Domain.Entities;
 
-namespace WebStoreUser.Application.Services;
+namespace WebStoreUser.Infrastructure.Services;
 
 public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
 {

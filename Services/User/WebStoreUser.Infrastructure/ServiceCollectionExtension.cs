@@ -8,12 +8,13 @@ using WebStoreUser.Application.Services;
 using WebStoreUser.Domain.Entities;
 using WebStoreUser.Infrastructure.Persistence;
 using WebStoreUser.Infrastructure.Repositories;
+using WebStoreUser.Infrastructure.Services;
 
 namespace WebStoreUser.Infrastructure;
 
 public static class ServiceCollectionExtension
 {
-    extension (IServiceCollection services)
+    extension(IServiceCollection services)
     {
         public IServiceCollection AddInfrastructure(IConfiguration configuration)
         {
