@@ -1,13 +1,12 @@
-﻿using WebStoreUser.Domain.Enums;
+﻿using WebStoreUser.Domain.Common;
+using WebStoreUser.Domain.Enums;
 
 namespace WebStoreUser.Domain.Entities;
 
-public class User
+public class User : BaseEntity<Guid>
 {
-    public Guid Id { get; set; }
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; }
     public UserRole Role { get; set; }
 }
