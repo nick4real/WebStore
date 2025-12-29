@@ -30,6 +30,9 @@ namespace WebStoreUser.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Device")
                         .HasColumnType("nvarchar(max)");
 
@@ -42,9 +45,6 @@ namespace WebStoreUser.Infrastructure.Migrations
                     b.Property<bool>("IsRevoked")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("RefreshTokenHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -52,6 +52,9 @@ namespace WebStoreUser.Infrastructure.Migrations
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserAgent")
                         .HasColumnType("nvarchar(max)");
@@ -83,6 +86,9 @@ namespace WebStoreUser.Infrastructure.Migrations
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .IsRequired()
