@@ -22,9 +22,19 @@ public class UserRepository(AppDbContext dbContext) : IUserRepository
         return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == guid);
     }
 
+    public async Task<User?> GetByLoginAsync(string login)
+    {
+        return await dbContext.Users.FirstOrDefaultAsync(u => u.Username == login || u.Email == login);
+    }
+
     public async Task<User?> GetByUsernameAsync(string username)
     {
         return await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+    }
+
+    public async Task<bool> IsLoginExistsAsync(string username, string email)
+    {
+        return await dbContext.Users.AnyAsync(u => u.Username == username || u.Email == email);
     }
 
     public async Task SaveChangesAsync() => await dbContext.SaveChangesAsync();
