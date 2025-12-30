@@ -1,5 +1,6 @@
 using Scalar.AspNetCore;
 using WebStoreUser.Infrastructure;
+using WebStoreUser.Infrastructure.Filters;
 
 // Builder
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.AddServiceDefaults();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
 builder.Services.AddOpenApi();
 
 // App

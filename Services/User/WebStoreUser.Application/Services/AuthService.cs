@@ -2,6 +2,7 @@
 using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Repositories;
 using WebStoreUser.Application.Interfaces.Services;
+using WebStoreUser.Application.Validators.Auth;
 using WebStoreUser.Domain.Entities;
 using WebStoreUser.Domain.Enums;
 
@@ -17,14 +18,10 @@ public class AuthService(
     // Interface implementation
     public async Task<TokenResponseDto> LoginAsync(UserLoginDto request)
     {
-        if (String.IsNullOrWhiteSpace(request.Login))
+        if (request.Login.Length > 20 && !request.Login.IsEmail())
             return null;
 
-        User? user;
-        if (request.Login.Contains('@'))
-            user = await userRepository.GetByEmailAsync(request.Login);
-        else
-            user = await userRepository.GetByUsernameAsync(request.Login);
+        var user = await userRepository.GetByLoginAsync(request.Login);
         if (user is null) return null;
 
         var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
@@ -82,13 +79,11 @@ public class AuthService(
 
     public async Task<bool> RegisterAsync(UserRegisterDto request)
     {
-        if (await userRepository.GetByEmailAsync(request.Email) != null
-            || await userRepository.GetByUsernameAsync(request.Username) != null)
-        {
+        // TODO: Can be optimized when SharpGrip.FluentValidation.AutoValidation.Mvc support for .NET 10 is released
+        if (await userRepository.IsLoginExistsAsync(request.Username, request.Email))
             return false;
-        }
 
-        var user = new User()
+        var user = new User() 
         {
             Id = Guid.NewGuid(),
             Username = request.Username,
