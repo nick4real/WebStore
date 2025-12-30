@@ -45,7 +45,7 @@ public class AuthService(
             IsRevoked = false
         };
 
-        await sessionRepository.CreateAsync(session);
+        await sessionRepository.AddAsync(session);
         await sessionRepository.SaveChangesAsync();
         return response;
     }
@@ -98,7 +98,7 @@ public class AuthService(
         };
         user.PasswordHash = new PasswordHasher<User>().HashPassword(user, request.Password);
 
-        await userRepository.CreateAsync(user);
+        await userRepository.AddAsync(user);
         await sessionRepository.SaveChangesAsync();
         return true;
     }

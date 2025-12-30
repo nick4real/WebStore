@@ -7,7 +7,7 @@ namespace WebStoreUser.Infrastructure.Repositories;
 
 public class UserRepository(AppDbContext dbContext) : IUserRepository
 {
-    public async Task CreateAsync(User user)
+    public async Task AddAsync(User user)
     {
         await dbContext.Users.AddAsync(user);
     }

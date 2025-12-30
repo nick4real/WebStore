@@ -7,7 +7,7 @@ namespace WebStoreUser.Infrastructure.Repositories;
 
 public class SessionRepository(AppDbContext dbContext) : ISessionRepository
 {
-    public async Task CreateAsync(Session session)
+    public async Task AddAsync(Session session)
     {
         await dbContext.Sessions.AddAsync(session);
     }
