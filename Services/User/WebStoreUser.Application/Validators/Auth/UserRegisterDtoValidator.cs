@@ -1,0 +1,39 @@
+﻿using FluentValidation;
+using WebStoreUser.Application.Dtos;
+using WebStoreUser.Application.Interfaces.Repositories;
+
+namespace WebStoreUser.Application.Validators.Auth;
+
+public class UserRegisterDtoValidator : AbstractValidator<UserRegisterDto>
+{
+    private readonly string usernamePattern = @"^[a-zA-Z0-9._-]{3,20}$";
+
+    public UserRegisterDtoValidator(IUserRepository userRepository)
+    {
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("Email is required.")
+            // TODO: Can be optimized when SharpGrip.FluentValidation.AutoValidation.Mvc support for .NET 10 is released
+            //.MustAsync(async (email, ct) =>
+            //    await userRepository.GetByEmailAsync(email) == null)
+            //    .WithMessage("User with the provided email already exists.")
+            .MaximumLength(256).WithMessage("Email must not exceed 256 characters.");
+
+        RuleFor(x => x.Username)
+            .NotEmpty().WithMessage("Username is required.")
+            .Matches(usernamePattern).WithMessage("Username can only contain letters, numbers, dots, underscores, and hyphens.")
+            //.MustAsync(async (username, ct) =>
+            //    await userRepository.GetByUsernameAsync(username) == null)
+            //    .WithMessage("User with the provided username already exists.")
+            .MinimumLength(3).WithMessage("Username must be at least 3 characters long.")
+            .MaximumLength(20).WithMessage("Username must not exceed 20 characters.");
+
+        RuleFor(x => x.Password)
+            .NotEmpty().WithMessage("Password cannot be empty")
+            .MinimumLength(8).WithMessage("Password length must be at least 8.")
+            .MaximumLength(32).WithMessage("Password length must not exceed 32.")
+            .Matches(@"[A-Z]+").WithMessage("Password must contain at least one uppercase letter.")
+            .Matches(@"[a-z]+").WithMessage("Password must contain at least one lowercase letter.")
+            .Matches(@"[0-9]+").WithMessage("Password must contain at least one number.")
+            .Matches(@"[\!\@\#\$\%\^\?\&\*]+").WithMessage("Password must contain at least one special character.");
+    }
+}

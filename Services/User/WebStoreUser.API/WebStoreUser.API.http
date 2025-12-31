@@ -1,6 +1,35 @@
-@WebStoreUser.API_HostAddress = http://localhost:5128
+@api_host = http://localhost:5128
 
-GET {{WebStoreUser.API_HostAddress}}/weatherforecast/
+GET {{api_host}}/health/
 Accept: application/json
+
+###
+
+POST {{api_host}}/api/auth/register
+Accept: application/json
+Content-Type: application/json
+{
+  "username": "loyd17",
+  "email": "example@gmail.com",
+  "password": "Test@1234"
+}
+
+###
+
+POST {{api_host}}/api/auth/login
+Content-Type: application/json
+{
+  "login": "example@gmail.com",
+  "password": "Test@1234"
+}
+
+###
+
+POST {{api_host}}/api/auth/refresh
+Content-Type: application/json
+{
+  "guid": "3FC98808-3461-4AEF-B7B2-8752023203DA",
+  "refreshtoken": "9HLMB236baATOvZtL56BnpFW9MBF9Cs1ZRHBFTyjPZk="
+}
 
 ###
