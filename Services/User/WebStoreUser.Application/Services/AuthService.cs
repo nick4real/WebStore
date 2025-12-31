@@ -57,7 +57,7 @@ public class AuthService(
         var user = await userRepository.GetByIdAsync(request.Guid);
         if (user == null) return null;
 
-        var sessionList = (await sessionRepository.GetAllActiveByIdAsync(request.Guid))?.ToList();
+        var sessionList = await sessionRepository.GetAllActiveByIdAsync(request.Guid);
         if (sessionList == null) return null;
 
         var session = sessionList

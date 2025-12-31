@@ -12,7 +12,7 @@ public class SessionRepository(AppDbContext dbContext) : ISessionRepository
         await dbContext.Sessions.AddAsync(session);
     }
 
-    public async Task<IQueryable<Session>?> GetAllActiveByIdAsync(Guid userId)
+    public async Task<IEnumerable<Session>?> GetAllActiveByIdAsync(Guid userId)
     {
         return dbContext.Sessions
                 .Where(s => s.IsRevoked == false
