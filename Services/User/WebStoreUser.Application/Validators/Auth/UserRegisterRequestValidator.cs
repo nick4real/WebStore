@@ -4,11 +4,11 @@ using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.Application.Validators.Auth;
 
-public class UserRegisterDtoValidator : AbstractValidator<UserRegisterRequest>
+public class UserRegisterRequestValidator : AbstractValidator<UserRegisterRequest>
 {
     private readonly string usernamePattern = @"^[a-zA-Z0-9._-]{3,20}$";
 
-    public UserRegisterDtoValidator(IUserRepository userRepository)
+    public UserRegisterRequestValidator(IUserRepository userRepository)
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")

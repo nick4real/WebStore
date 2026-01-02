@@ -36,7 +36,7 @@ public static class ServiceCollectionExtension
             services.AddScoped<ITokenGenerator, TokenGenerator>();
 
             // Validators
-            services.AddValidatorsFromAssemblyContaining<UserLoginDtoValidator>();
+            services.AddValidatorsFromAssemblyContaining<UserLoginRequestValidator>();
             services.AddFluentValidationAutoValidation();
 
             return services;
