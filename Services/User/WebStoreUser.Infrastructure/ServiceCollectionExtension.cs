@@ -32,8 +32,8 @@ public static class ServiceCollectionExtension
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
-            services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
-            services.AddSingleton<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
 
             // Validators
             services.AddValidatorsFromAssemblyContaining<UserLoginDtoValidator>();
