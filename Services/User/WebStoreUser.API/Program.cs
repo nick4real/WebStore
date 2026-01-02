@@ -6,11 +6,15 @@ using WebStoreUser.Infrastructure.Options;
 // Builder
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)                
+    .AddEnvironmentVariables();
+
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
-builder.Services.AddInfrastructure(builder.Configuration);
-
 builder.AddServiceDefaults();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationFilter>();
