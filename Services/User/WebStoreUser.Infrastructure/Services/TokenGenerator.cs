@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,11 +6,13 @@ using System.Security.Cryptography;
 using System.Text;
 using WebStoreUser.Application.Interfaces.Services;
 using WebStoreUser.Domain.Entities;
+using WebStoreUser.Infrastructure.Options;
 
 namespace WebStoreUser.Infrastructure.Services;
 
-public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
+public class TokenGenerator(IOptions<JwtOptions> jwtOptions) : ITokenGenerator
 {
+    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
     public string CreateRefreshToken()
     {
         var randomNumber = new byte[32];
@@ -29,15 +31,15 @@ public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
         };
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
+            Encoding.UTF8.GetBytes(_jwtOptions.Secret));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
         var tokenDescriptor = new JwtSecurityToken(
             claims: claims,
-            issuer: configuration.GetValue<string>("AppSettings:Issuer")!,
-            audience: configuration.GetValue<string>("AppSettings:Audience")!,
-            expires: DateTime.UtcNow.AddDays(7),
+            issuer: _jwtOptions.Issuer,
+            audience: _jwtOptions.Audience,
+            expires: DateTime.UtcNow.AddMinutes(_jwtOptions.ExpiresMinutes),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
