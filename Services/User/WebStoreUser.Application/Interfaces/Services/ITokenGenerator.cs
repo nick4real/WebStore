@@ -1,5 +1,4 @@
-﻿using WebStoreUser.Application.Dtos;
-using WebStoreUser.Domain.Entities;
+﻿using WebStoreUser.Domain.Entities;
 
 namespace WebStoreUser.Application.Interfaces.Services;
 

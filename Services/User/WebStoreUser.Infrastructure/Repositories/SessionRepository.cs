@@ -8,17 +8,14 @@ namespace WebStoreUser.Infrastructure.Repositories;
 public class SessionRepository(AppDbContext dbContext) : ISessionRepository
 {
     public async Task AddAsync(Session session)
-    {
-        await dbContext.Sessions.AddAsync(session);
-    }
+        => await dbContext.Sessions.AddAsync(session);
 
     public async Task<IEnumerable<Session>?> GetAllActiveByIdAsync(Guid userId)
-    {
-        return dbContext.Sessions
+        => dbContext.Sessions
                 .Where(s => s.IsRevoked == false
                 && s.UserId == userId
                 && DateTime.UtcNow <= s.Expires);
-    }
 
-    public async Task SaveChangesAsync() => await dbContext.SaveChangesAsync();
+    public async Task SaveChangesAsync() 
+        => await dbContext.SaveChangesAsync();
 }

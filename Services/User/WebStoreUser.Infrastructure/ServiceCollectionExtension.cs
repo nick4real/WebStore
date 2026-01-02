@@ -8,7 +8,6 @@ using WebStoreUser.Application.Interfaces.Repositories;
 using WebStoreUser.Application.Interfaces.Services;
 using WebStoreUser.Application.Services;
 using WebStoreUser.Application.Validators.Auth;
-using WebStoreUser.Domain.Entities;
 using WebStoreUser.Infrastructure.Persistence;
 using WebStoreUser.Infrastructure.Repositories;
 using WebStoreUser.Infrastructure.Services;
