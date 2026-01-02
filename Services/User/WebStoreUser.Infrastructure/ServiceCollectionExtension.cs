@@ -8,9 +8,8 @@ using WebStoreUser.Application.Interfaces.Repositories;
 using WebStoreUser.Application.Interfaces.Services;
 using WebStoreUser.Application.Services;
 using WebStoreUser.Application.Validators.Auth;
-using WebStoreUser.Domain.Entities;
 using WebStoreUser.Infrastructure.Persistence;
-using WebStoreUser.Infrastructure.Repositories;
+using WebStoreUser.Infrastructure.Persistence.Repositories;
 using WebStoreUser.Infrastructure.Services;
 
 namespace WebStoreUser.Infrastructure;
@@ -33,8 +32,7 @@ public static class ServiceCollectionExtension
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
-            services.AddSingleton<IHashService, HashService>();
-            services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
             services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
             // Validators
