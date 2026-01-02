@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebStoreUser.Application.Interfaces.Repositories;
 using WebStoreUser.Domain.Entities;
-using WebStoreUser.Infrastructure.Persistence;
+using WebStoreUser.Infrastructure;
 
-namespace WebStoreUser.Infrastructure.Repositories;
+namespace WebStoreUser.Infrastructure.Persistence.Repositories;
 
 public class SessionRepository(AppDbContext dbContext) : ISessionRepository
 {
@@ -16,6 +16,6 @@ public class SessionRepository(AppDbContext dbContext) : ISessionRepository
                 && s.UserId == userId
                 && DateTime.UtcNow <= s.Expires);
 
-    public async Task SaveChangesAsync() 
+    public async Task SaveChangesAsync()
         => await dbContext.SaveChangesAsync();
 }

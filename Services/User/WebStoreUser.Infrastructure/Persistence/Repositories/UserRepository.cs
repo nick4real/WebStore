@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebStoreUser.Application.Interfaces.Repositories;
 using WebStoreUser.Domain.Entities;
-using WebStoreUser.Infrastructure.Persistence;
+using WebStoreUser.Infrastructure;
 
-namespace WebStoreUser.Infrastructure.Repositories;
+namespace WebStoreUser.Infrastructure.Persistence.Repositories;
 
 public class UserRepository(AppDbContext dbContext) : IUserRepository
 {
@@ -25,6 +25,6 @@ public class UserRepository(AppDbContext dbContext) : IUserRepository
     public async Task<bool> IsLoginExistsAsync(string username, string email)
         => await dbContext.Users.AnyAsync(u => u.Username == username || u.Email == email);
 
-    public async Task SaveChangesAsync() 
+    public async Task SaveChangesAsync()
         => await dbContext.SaveChangesAsync();
 }
