@@ -12,7 +12,7 @@ using WebStoreUser.Infrastructure.Persistence;
 namespace WebStoreUser.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251229125044_Init")]
+    [Migration("20260102162651_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -48,11 +48,7 @@ namespace WebStoreUser.Infrastructure.Migrations
                     b.Property<bool>("IsRevoked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshTokenHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Salt")
+                    b.Property<string>("RefreshToken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

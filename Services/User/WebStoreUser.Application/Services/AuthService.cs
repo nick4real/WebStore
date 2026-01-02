@@ -13,7 +13,6 @@ public class AuthService(
     IUserRepository userRepository,
     ISessionRepository sessionRepository,
     IPasswordHasherService passwordHasherService,
-    ITokenHasherService hashService,
     ITokenGenerator tokenGenerator) : IAuthService
 {
     // Interface implementation
@@ -34,14 +33,10 @@ public class AuthService(
             tokenGenerator.CreateRefreshToken()
         );
 
-        var salt = hashService.GenerateSalt();
-        var refreshTokenHash = hashService.HashToken(response.RefreshToken, salt);
-
         var session = new Session
         {
             UserId = user.Id,
-            RefreshTokenHash = refreshTokenHash,
-            Salt = Convert.ToBase64String(salt),
+            RefreshToken = response.RefreshToken,
             Expires = DateTime.UtcNow.AddDays(14),
             IsRevoked = false
         };
@@ -64,8 +59,9 @@ public class AuthService(
         var sessionList = await sessionRepository.GetAllActiveByIdAsync(request.Guid, ct);
         if (sessionList == null) return null;
 
+        // TODO: Since no need for server-side token validation, can be optimized in new repository method
         var session = sessionList
-            .FirstOrDefault(s => hashService.VerifyHashToken(request.RefreshToken, Convert.FromBase64String(s.Salt), s.RefreshTokenHash));
+            .FirstOrDefault(s => s.RefreshToken == request.RefreshToken);
         if (session == null) return null;
 
         var response = new TokenResponse
@@ -74,11 +70,7 @@ public class AuthService(
             tokenGenerator.CreateRefreshToken()
         );
 
-        var salt = hashService.GenerateSalt();
-        var refreshTokenHash = hashService.HashToken(response.RefreshToken, salt);
-
-        session.RefreshTokenHash = refreshTokenHash;
-        session.Salt = Convert.ToBase64String(salt);
+        session.RefreshToken = response.RefreshToken;
         session.Expires = DateTime.UtcNow.AddDays(7);
 
         await sessionRepository.SaveChangesAsync(ct);
