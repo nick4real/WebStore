@@ -5,5 +5,6 @@ namespace WebStoreUser.Application.Interfaces.Services;
 
 public interface ITokenGenerator
 {
-    TokenResponseDto CreateTokens(User user);
+    string CreateAccessToken(User user);
+    string CreateRefreshToken();
 }

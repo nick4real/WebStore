@@ -27,7 +27,11 @@ public class AuthService(
         var isVerified = passwordHasherService.VerifyPassword(request.Password, user.PasswordHash);
         if (!isVerified) return null;
 
-        var response = tokenGenerator.CreateTokens(user);
+        var response = new TokenResponseDto
+        (
+            tokenGenerator.CreateAccessToken(user),
+            tokenGenerator.CreateRefreshToken()
+        );
 
         var salt = hashService.GenerateSalt();
         var refreshTokenHash = hashService.HashToken(response.RefreshToken, salt);
@@ -63,7 +67,11 @@ public class AuthService(
             .FirstOrDefault(s => hashService.VerifyHashToken(request.RefreshToken, Convert.FromBase64String(s.Salt), s.RefreshTokenHash));
         if (session == null) return null;
 
-        var response = tokenGenerator.CreateTokens(user);
+        var response = new TokenResponseDto
+        (
+            tokenGenerator.CreateAccessToken(user),
+            tokenGenerator.CreateRefreshToken()
+        );
 
         var salt = hashService.GenerateSalt();
         var refreshTokenHash = hashService.HashToken(response.RefreshToken, salt);
