@@ -4,7 +4,7 @@ using WebStoreUser.Application.Interfaces.Services;
 
 namespace WebStoreUser.Infrastructure.Services;
 
-public class HashService : IHashService
+public class TokenHasherService : ITokenHasherService
 {
     public byte[] GenerateSalt(int length = 32)
     {

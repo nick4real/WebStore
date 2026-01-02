@@ -12,7 +12,7 @@ public class AuthService(
     IUserRepository userRepository,
     ISessionRepository sessionRepository,
     IPasswordHasherService passwordHasherService,
-    IHashService hashService,
+    ITokenHasherService hashService,
     ITokenGenerator tokenGenerator) : IAuthService
 {
     // Interface implementation

@@ -33,7 +33,7 @@ public static class ServiceCollectionExtension
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
-            services.AddSingleton<IHashService, HashService>();
+            services.AddSingleton<ITokenHasherService, TokenHasherService>();
             services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
             services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
