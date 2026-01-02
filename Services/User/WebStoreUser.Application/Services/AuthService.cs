@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Repositories;
 using WebStoreUser.Application.Interfaces.Services;
+using WebStoreUser.Application.Requests;
+using WebStoreUser.Application.Responses;
 using WebStoreUser.Application.Validators.Auth;
 using WebStoreUser.Domain.Entities;
 using WebStoreUser.Domain.Enums;
@@ -16,7 +17,7 @@ public class AuthService(
     ITokenGenerator tokenGenerator) : IAuthService
 {
     // Interface implementation
-    public async Task<TokenResponseDto> LoginAsync(UserLoginDto request)
+    public async Task<TokenResponse> LoginAsync(UserLoginRequest request)
     {
         if (request.Login.Length > 20 && !request.Login.IsEmail())
             return null;
@@ -27,7 +28,7 @@ public class AuthService(
         var isVerified = passwordHasherService.VerifyPassword(request.Password, user.PasswordHash);
         if (!isVerified) return null;
 
-        var response = new TokenResponseDto
+        var response = new TokenResponse
         (
             tokenGenerator.CreateAccessToken(user),
             tokenGenerator.CreateRefreshToken()
@@ -55,7 +56,7 @@ public class AuthService(
         throw new NotImplementedException(); // TODO: Logout
     }
 
-    public async Task<TokenResponseDto> RefreshAsync(RefreshTokenRequestDto request)
+    public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
     {
         var user = await userRepository.GetByIdAsync(request.Guid);
         if (user == null) return null;
@@ -67,7 +68,7 @@ public class AuthService(
             .FirstOrDefault(s => hashService.VerifyHashToken(request.RefreshToken, Convert.FromBase64String(s.Salt), s.RefreshTokenHash));
         if (session == null) return null;
 
-        var response = new TokenResponseDto
+        var response = new TokenResponse
         (
             tokenGenerator.CreateAccessToken(user),
             tokenGenerator.CreateRefreshToken()
@@ -84,7 +85,7 @@ public class AuthService(
         return response;
     }
 
-    public async Task<bool> RegisterAsync(UserRegisterDto request)
+    public async Task<bool> RegisterAsync(UserRegisterRequest request)
     {
         // TODO: Can be optimized when SharpGrip.FluentValidation.AutoValidation.Mvc support for .NET 10 is released
         if (await userRepository.IsLoginExistsAsync(request.Username, request.Email))

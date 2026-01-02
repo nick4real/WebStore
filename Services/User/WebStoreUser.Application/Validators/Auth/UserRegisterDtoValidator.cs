@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Repositories;
+using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.Application.Validators.Auth;
 
-public class UserRegisterDtoValidator : AbstractValidator<UserRegisterDto>
+public class UserRegisterDtoValidator : AbstractValidator<UserRegisterRequest>
 {
     private readonly string usernamePattern = @"^[a-zA-Z0-9._-]{3,20}$";
 

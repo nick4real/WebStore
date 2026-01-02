@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Services;
+using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.API.Controllers;
 
@@ -9,7 +9,7 @@ namespace WebStoreUser.API.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterDto request)
+    public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
     {
         var isSuccess = await authService.RegisterAsync(request);
         if (!isSuccess)
@@ -19,7 +19,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginDto request)
+    public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
     {
         var result = await authService.LoginAsync(request);
         if (result == null)
@@ -29,7 +29,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto request)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
         var result = await authService.RefreshAsync(request);
         if (result == null)
