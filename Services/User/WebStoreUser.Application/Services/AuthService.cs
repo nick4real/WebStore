@@ -11,7 +11,7 @@ namespace WebStoreUser.Application.Services;
 public class AuthService(
     IUserRepository userRepository,
     ISessionRepository sessionRepository,
-    IPasswordHasher<User> passwordHasher,
+    IPasswordHasherService passwordHasherService,
     IHashService hashService,
     ITokenGenerator tokenGenerator) : IAuthService
 {
@@ -24,8 +24,7 @@ public class AuthService(
         var user = await userRepository.GetByLoginAsync(request.Login);
         if (user is null) return null;
 
-        var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
-        var isVerified = result != PasswordVerificationResult.Failed;
+        var isVerified = passwordHasherService.VerifyPassword(request.Password, user.PasswordHash);
         if (!isVerified) return null;
 
         var response = tokenGenerator.CreateTokens(user);
@@ -83,17 +82,15 @@ public class AuthService(
         if (await userRepository.IsLoginExistsAsync(request.Username, request.Email))
             return false;
 
-        var user = new User() 
+        await userRepository.AddAsync(new User()
         {
             Id = Guid.NewGuid(),
             Username = request.Username,
             Email = request.Email,
+            PasswordHash = passwordHasherService.HashPassword(request.Password),
             CreatedAt = DateTime.UtcNow,
             Role = UserRole.Customer
-        };
-        user.PasswordHash = new PasswordHasher<User>().HashPassword(user, request.Password);
-
-        await userRepository.AddAsync(user);
+        });
         await sessionRepository.SaveChangesAsync();
         return true;
     }
