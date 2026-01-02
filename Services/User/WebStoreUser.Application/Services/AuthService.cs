@@ -17,12 +17,12 @@ public class AuthService(
     ITokenGenerator tokenGenerator) : IAuthService
 {
     // Interface implementation
-    public async Task<TokenResponse> LoginAsync(UserLoginRequest request)
+    public async Task<TokenResponse> LoginAsync(UserLoginRequest request, CancellationToken ct)
     {
         if (request.Login.Length > 20 && !request.Login.IsEmail())
             return null;
 
-        var user = await userRepository.GetByLoginAsync(request.Login);
+        var user = await userRepository.GetByLoginAsync(request.Login, ct);
         if (user is null) return null;
 
         var isVerified = passwordHasherService.VerifyPassword(request.Password, user.PasswordHash);
@@ -46,8 +46,8 @@ public class AuthService(
             IsRevoked = false
         };
 
-        await sessionRepository.AddAsync(session);
-        await sessionRepository.SaveChangesAsync();
+        await sessionRepository.AddAsync(session, ct);
+        await sessionRepository.SaveChangesAsync(ct);
         return response;
     }
 
@@ -56,12 +56,12 @@ public class AuthService(
         throw new NotImplementedException(); // TODO: Logout
     }
 
-    public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
+    public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request, CancellationToken ct)
     {
-        var user = await userRepository.GetByIdAsync(request.Guid);
+        var user = await userRepository.GetByIdAsync(request.Guid, ct);
         if (user == null) return null;
 
-        var sessionList = await sessionRepository.GetAllActiveByIdAsync(request.Guid);
+        var sessionList = await sessionRepository.GetAllActiveByIdAsync(request.Guid, ct);
         if (sessionList == null) return null;
 
         var session = sessionList
@@ -81,14 +81,14 @@ public class AuthService(
         session.Salt = Convert.ToBase64String(salt);
         session.Expires = DateTime.UtcNow.AddDays(7);
 
-        await sessionRepository.SaveChangesAsync();
+        await sessionRepository.SaveChangesAsync(ct);
         return response;
     }
 
-    public async Task<bool> RegisterAsync(UserRegisterRequest request)
+    public async Task<bool> RegisterAsync(UserRegisterRequest request, CancellationToken ct)
     {
         // TODO: Can be optimized when SharpGrip.FluentValidation.AutoValidation.Mvc support for .NET 10 is released
-        if (await userRepository.IsLoginExistsAsync(request.Username, request.Email))
+        if (await userRepository.IsLoginExistsAsync(request.Username, request.Email, ct))
             return false;
 
         await userRepository.AddAsync(new User()
@@ -99,8 +99,8 @@ public class AuthService(
             PasswordHash = passwordHasherService.HashPassword(request.Password),
             CreatedAt = DateTime.UtcNow,
             Role = UserRole.Customer
-        });
-        await sessionRepository.SaveChangesAsync();
+        }, ct);
+        await sessionRepository.SaveChangesAsync(ct);
         return true;
     }
 }

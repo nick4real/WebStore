@@ -4,7 +4,7 @@ namespace WebStoreUser.Application.Interfaces.Repositories;
 
 public interface ISessionRepository
 {
-    Task<IReadOnlyList<Session>?> GetAllActiveByIdAsync(Guid userId);
-    Task AddAsync(Session session);
-    Task SaveChangesAsync();
+    Task<IReadOnlyList<Session>?> GetAllActiveByIdAsync(Guid userId, CancellationToken ct);
+    Task AddAsync(Session session, CancellationToken ct);
+    Task SaveChangesAsync(CancellationToken ct);
 }
