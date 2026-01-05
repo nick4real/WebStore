@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Repositories;
+using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.Application.Validators.Auth;
 
-public class UserRegisterDtoValidator : AbstractValidator<UserRegisterDto>
+public class UserRegisterRequestValidator : AbstractValidator<UserRegisterRequest>
 {
     private readonly string usernamePattern = @"^[a-zA-Z0-9._-]{3,20}$";
 
-    public UserRegisterDtoValidator(IUserRepository userRepository)
+    public UserRegisterRequestValidator(IUserRepository userRepository)
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")
@@ -31,9 +31,8 @@ public class UserRegisterDtoValidator : AbstractValidator<UserRegisterDto>
             .NotEmpty().WithMessage("Password cannot be empty")
             .MinimumLength(8).WithMessage("Password length must be at least 8.")
             .MaximumLength(32).WithMessage("Password length must not exceed 32.")
-            .Matches(@"[A-Z]+").WithMessage("Password must contain at least one uppercase letter.")
-            .Matches(@"[a-z]+").WithMessage("Password must contain at least one lowercase letter.")
-            .Matches(@"[0-9]+").WithMessage("Password must contain at least one number.")
-            .Matches(@"[\!\@\#\$\%\^\?\&\*]+").WithMessage("Password must contain at least one special character.");
+            .Matches(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^?&*]).+$")
+            .WithMessage("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        ;
     }
 }

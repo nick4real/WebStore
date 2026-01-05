@@ -1,23 +1,19 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Services;
 using WebStoreUser.Domain.Entities;
+using WebStoreUser.Infrastructure.Options;
 
 namespace WebStoreUser.Infrastructure.Services;
 
-public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
+public class TokenGenerator(IOptions<JwtOptions> jwtOptions) : ITokenGenerator
 {
-    public TokenResponseDto CreateTokens(User user)
-    {
-        return new TokenResponseDto(CreateAccessToken(user), CreateRefreshToken());
-    }
-
-    private string CreateRefreshToken()
+    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+    public string CreateRefreshToken()
     {
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
@@ -25,26 +21,26 @@ public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
         return Convert.ToBase64String(randomNumber);
     }
 
-    private string CreateAccessToken(User user)
+    public string CreateAccessToken(User user)
     {
-        var claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Role.ToString())
+        };
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
+            Encoding.UTF8.GetBytes(_jwtOptions.Secret));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
         var tokenDescriptor = new JwtSecurityToken(
             claims: claims,
-            issuer: configuration.GetValue<string>("AppSettings:Issuer")!,
-            audience: configuration.GetValue<string>("AppSettings:Audience")!,
-            expires: DateTime.UtcNow.AddDays(7),
-            signingCredentials: creds
-            );
+            issuer: _jwtOptions.Issuer,
+            audience: _jwtOptions.Audience,
+            expires: DateTime.UtcNow.AddMinutes(_jwtOptions.ExpiresMinutes),
+            signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
     }

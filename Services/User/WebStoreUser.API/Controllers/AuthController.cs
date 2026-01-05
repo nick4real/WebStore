@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Services;
+using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.API.Controllers;
 
@@ -9,9 +9,9 @@ namespace WebStoreUser.API.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterDto request)
+    public async Task<IActionResult> Register([FromBody] UserRegisterRequest request, CancellationToken ct)
     {
-        var isSuccess = await authService.RegisterAsync(request);
+        var isSuccess = await authService.RegisterAsync(request, ct);
         if (!isSuccess)
             return BadRequest("User already exists");
 
@@ -19,9 +19,9 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginDto request)
+    public async Task<IActionResult> Login([FromBody] UserLoginRequest request, CancellationToken ct)
     {
-        var result = await authService.LoginAsync(request);
+        var result = await authService.LoginAsync(request, ct);
         if (result == null)
             return BadRequest("Invalid credentials");
 
@@ -29,9 +29,9 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto request)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request, CancellationToken ct)
     {
-        var result = await authService.RefreshAsync(request);
+        var result = await authService.RefreshAsync(request, ct);
         if (result == null)
             return Unauthorized("Invalid refresh token");
 

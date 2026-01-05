@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using WebStoreUser.Application.Dtos;
 using WebStoreUser.Application.Interfaces.Repositories;
+using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.Application.Validators.Auth;
 
-public class UserLoginDtoValidator : AbstractValidator<UserLoginDto>
+public class UserLoginRequestValidator : AbstractValidator<UserLoginRequest>
 {
-    public UserLoginDtoValidator(IUserRepository userRepository)
+    public UserLoginRequestValidator(IUserRepository userRepository)
     {
         RuleFor(x => x.Login)
             .NotEmpty().WithMessage("Login is required.")
