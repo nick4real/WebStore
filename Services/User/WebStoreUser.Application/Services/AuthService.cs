@@ -37,7 +37,7 @@ public class AuthService(
         {
             UserId = user.Id,
             RefreshToken = response.RefreshToken,
-            Expires = DateTime.UtcNow.AddDays(14),
+            Expires = DateTime.UtcNow.AddDays(7),
             IsRevoked = false
         };
 
