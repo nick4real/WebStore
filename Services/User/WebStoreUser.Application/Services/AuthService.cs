@@ -53,20 +53,12 @@ public class AuthService(
 
     public async Task<TokenResponse> RefreshAsync(RefreshTokenRequest request, CancellationToken ct)
     {
-        var user = await userRepository.GetByIdAsync(request.Guid, ct);
-        if (user == null) return null;
-
-        var sessionList = await sessionRepository.GetAllActiveByIdAsync(request.Guid, ct);
-        if (sessionList == null) return null;
-
-        // TODO: Since no need for server-side token validation, can be optimized in new repository method
-        var session = sessionList
-            .FirstOrDefault(s => s.RefreshToken == request.RefreshToken);
-        if (session == null) return null;
+        var session = await sessionRepository.GetActiveJoinUserAsync(request.UserId, request.RefreshToken ,ct);
+        if (session == null || session.User == null) return null;
 
         var response = new TokenResponse
         (
-            tokenGenerator.CreateAccessToken(user),
+            tokenGenerator.CreateAccessToken(session.User),
             tokenGenerator.CreateRefreshToken()
         );
 
