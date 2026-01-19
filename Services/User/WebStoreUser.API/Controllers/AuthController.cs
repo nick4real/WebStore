@@ -4,7 +4,7 @@ using WebStoreUser.Application.Requests;
 
 namespace WebStoreUser.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class AuthController(IAuthService authService) : ControllerBase
 {
