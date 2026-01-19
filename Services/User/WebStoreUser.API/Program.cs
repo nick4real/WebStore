@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Scalar.AspNetCore;
 using WebStoreUser.Infrastructure;
 using WebStoreUser.Infrastructure.Filters;
@@ -23,6 +24,15 @@ builder.Services.AddOpenApi();
 
 // App
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto |
+        ForwardedHeaders.XForwardedHost,
+
+    ForwardLimit = 1
+});
 
 app.MapDefaultEndpoints();
 
