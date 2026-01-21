@@ -1,17 +1,16 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Projects.WebStoreGateway>("webstoregateway");
+var sqlServer = builder.AddSqlServer("sqlServer").WithLifetime(ContainerLifetime.Persistent);
 
-builder.AddProject<Projects.BlazorApp>("blazorapp");
+var userDatabase = sqlServer.AddDatabase("userDatabase");
+var userService = builder.AddProject<Projects.WebStoreUser_API>("userService")
+    .WaitFor(userDatabase)
+    .WithReference(userDatabase, "UserDatabase");
 
-builder.AddProject<Projects.WebStoreFeedback_API>("webstorefeedback-api");
+var blazorWebApp = builder.AddProject<Projects.BlazorApp>("blazorWebApp");
 
-builder.AddProject<Projects.WebStoreNotification_API>("webstorenotification-api");
-
-builder.AddProject<Projects.WebStoreOrder_API>("webstoreorder-api");
-
-builder.AddProject<Projects.WebStoreProduct_API>("webstoreproduct-api");
-
-builder.AddProject<Projects.WebStoreUser_API>("webstoreuser-api");
+var webStoreGateway = builder.AddProject<Projects.WebStoreGateway>("webStoreGateway")
+    .WithReference(blazorWebApp)
+    .WithReference(userService);
 
 builder.Build().Run();
