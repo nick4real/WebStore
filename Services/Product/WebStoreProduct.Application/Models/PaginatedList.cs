@@ -4,7 +4,7 @@ namespace WebStoreProduct.Application.Models;
 
 public class PaginatedList<T> : IReadOnlyList<T>
 {
-    public T[] Items { get; init; }
+    private T[] Items { get; }
     public int Count => Items.Length;
 
     public int PageIndex { get; }
