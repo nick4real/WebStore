@@ -1,4 +1,5 @@
-﻿using MapsterMapper;
+﻿using Mapster;
+using MapsterMapper;
 using WebStoreProduct.Application.Common;
 using WebStoreProduct.Application.DTOs;
 using WebStoreProduct.Application.Interfaces.Repositories;
@@ -29,7 +30,7 @@ public class ProductService(IProductRepository productRepository, IMapper mapper
             return Result<PaginatedList<ProductDto>>.Failure(new Error(ErrorCode.NotFound, "No products were found."));
         }
 
-        return Result<PaginatedList<ProductDto>>.Success(mapper.Map<PaginatedList<ProductDto>>(products));
+        return Result<PaginatedList<ProductDto>>.Success(products);
     }
 
     public async Task<Result<PaginatedList<ProductDto>>> GetProductsByCategoryAsync(uint categoryId, int page, int size)
@@ -40,6 +41,6 @@ public class ProductService(IProductRepository productRepository, IMapper mapper
             return Result<PaginatedList<ProductDto>>.Failure(new Error(ErrorCode.NotFound, "No products were found."));
         }
 
-        return Result<PaginatedList<ProductDto>>.Success(mapper.Map<PaginatedList<ProductDto>>(products));
+        return Result<PaginatedList<ProductDto>>.Success(products);
     }
 }

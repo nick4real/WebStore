@@ -18,7 +18,7 @@ public static class ServiceCollectionExtension
         {
             services.AddMapster();
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("UserDatabase"), builder =>
+                options.UseSqlServer(configuration.GetConnectionString("ProductDatabase"), builder =>
                 {
                     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                 }));
