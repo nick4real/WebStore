@@ -82,14 +82,15 @@ public class AppDbContext : DbContext
                     .RuleFor(p => p.StockQuantity, f => rnd.Next(10, 100))
                     .RuleFor(p => p.StockQuantity, f => rnd.Next(10, 100));
 
-                var products = productsFaker.Generate(10);
+                var products = productsFaker.Generate(5);
+                var pointer = 0;
 
                 foreach (var p in products)
                 {
                     p.Images = new List<ImageLink>();
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
-                        p.Images.Add(context.Set<ImageLink>().Skip(i).First()!);
+                        p.Images.Add(context.Set<ImageLink>().Skip(pointer++).First()!);
                     }
                 }
 
