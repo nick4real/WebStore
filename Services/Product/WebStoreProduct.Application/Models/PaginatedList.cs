@@ -2,9 +2,9 @@
 
 namespace WebStoreProduct.Application.Models;
 
-public class PaginatedList<T> : IReadOnlyList<T>
+public record PaginatedList<T> : IReadOnlyList<T>
 {
-    private T[] Items { get; }
+    public T[] Items { get; }
     public int Count => Items.Length;
 
     public int PageIndex { get; }

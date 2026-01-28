@@ -34,7 +34,7 @@ public class AppDbContext : DbContext
                 var imagesFaker = new Faker<ImageLink>()
                     .RuleFor(i => i.Url, f => f.Image.PicsumUrl());
 
-                var images = imagesFaker.Generate(10);
+                var images = imagesFaker.Generate(30);
 
                 await context.Set<ImageLink>().AddRangeAsync(images, ct);
                 await context.SaveChangesAsync(ct);
@@ -82,7 +82,7 @@ public class AppDbContext : DbContext
                     .RuleFor(p => p.StockQuantity, f => rnd.Next(10, 100))
                     .RuleFor(p => p.StockQuantity, f => rnd.Next(10, 100));
 
-                var products = productsFaker.Generate(5);
+                var products = productsFaker.Generate(15);
                 var pointer = 0;
 
                 foreach (var p in products)
