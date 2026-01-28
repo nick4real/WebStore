@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WebStoreProduct.Domain.Entities;
 
@@ -77,8 +76,8 @@ public class AppDbContext : DbContext
                 var productsFaker = new Faker<Product>()
                     .RuleFor(p => p.Title, f => f.Commerce.ProductName())
                     .RuleFor(p => p.Description, f => f.Commerce.ProductDescription())
-                    .RuleFor(p => p.CategoryId, f => (uint)rnd.Next(1,7))
-                    .RuleFor(p => p.CreatedAt, f => DateTime.Now.AddDays(-rnd.Next(1,700)))
+                    .RuleFor(p => p.CategoryId, f => (uint)rnd.Next(1, 7))
+                    .RuleFor(p => p.CreatedAt, f => DateTime.Now.AddDays(-rnd.Next(1, 700)))
                     .RuleFor(p => p.Price, f => rnd.Next(10, 1000))
                     .RuleFor(p => p.StockQuantity, f => rnd.Next(10, 100))
                     .RuleFor(p => p.StockQuantity, f => rnd.Next(10, 100));

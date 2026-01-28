@@ -15,9 +15,10 @@ public class ProductRepository(AppDbContext dbContext) : IProductRepository
     public async Task<PaginatedList<ProductDto>?> GetProductsAsync(int page, int size)
     {
         var products = await dbContext.Products
-            .ProjectToType<ProductDto>()
+            .Include(p => p.Images)
             .Skip((page - 1) * size)
             .Take(size)
+            .ProjectToType<ProductDto>()
             .ToArrayAsync();
 
         var list = products.ToList();
