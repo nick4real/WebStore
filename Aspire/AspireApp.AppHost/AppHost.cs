@@ -15,7 +15,8 @@ var productService = builder.AddProject<Projects.WebStoreProduct_API>("productSe
 var blazorWebApp = builder.AddProject<Projects.BlazorApp>("blazorWebApp");
 
 var webStoreGateway = builder.AddProject<Projects.WebStoreGateway>("webStoreGateway")
-    .WithReference(blazorWebApp)
-    .WithReference(userService);
+    .WithReference(userService)
+    .WithReference(productService)
+    .WithReference(blazorWebApp);
 
 builder.Build().Run();
